@@ -25,9 +25,9 @@ Adafruit_NeoPixel strip(12, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 void setup() {
   Serial.begin(9600);
-  pinMode(kranc_L, INPUT_PULLUP);
-  pinMode(kranc_R, INPUT_PULLUP);
-  pinMode(kranc_B, INPUT_PULLUP); 
+  pinMode(kranc_L, INPUT);
+  pinMode(kranc_R, INPUT);
+  pinMode(kranc_B, INPUT); 
 
   pinMode(3, OUTPUT);
   pinMode(19, INPUT);
