@@ -16,21 +16,27 @@
 #define serv 9
 
 #define LED_PIN 14
-#define MAXIMUM_BRIGHTNESS 255
+
+#define HSV_BUMP 1000
+#define CHANGE_TIME 50
+#define BLUE_LIGHT 25000
+#define BLUE_DARK 45000
+#define RED_LIGHT 55000
+#define RED_DARK 10000
+
 Servo s;
 
 ACS712  ACS(A7, 5.0, 1023, 100);
 
 Adafruit_NeoPixel strip(12, LED_PIN, NEO_GRB + NEO_KHZ800);
 
-int maxBrightness = 255;
-int minBrightness = 0;
-
-uint16_t hsvb = 25000;
+uint16_t hsvb = BLUE_LIGHT;
 auto colorb = Adafruit_NeoPixel::ColorHSV(hsvb, 255, 255);
 
-uint16_t hsvr = 55000;
+uint16_t hsvr = RED_LIGHT;
 auto colorr = Adafruit_NeoPixel::ColorHSV(hsvr, 255, 255);
+
+bool state = 0;  //0 forward, 1 backward
 
 void setup() {
   Serial.begin(9600);
@@ -78,10 +84,9 @@ void loop() {
   Serial.println(digitalRead(kranc_R));
   Serial.println(digitalRead(kranc_B));
 
-  redgrad();
-  bluegrad();
+  ringGrad();
 
-  delay(100);
+  delay(50);
 }
 
 void colorWipe(uint32_t color, int wait, int start, int end) {
@@ -92,48 +97,54 @@ void colorWipe(uint32_t color, int wait, int start, int end) {
   }
 }
 
-void redgrad(){
-  
-  hsvr = hsvr + 1000;
-  if(hsvr > 10000)
-    hsvr = 55000;
+void redGradForward(){
+  hsvr = hsvr + HSV_BUMP;
   colorr = Adafruit_NeoPixel::ColorHSV(hsvr, 255, 255);
-  colorWipe(colorr, 100, 0, 2); // Red
-  colorWipe(colorr, 100, 9, 11);
+  colorWipe(colorr, CHANGE_TIME, 0, 2); // Red
+  colorWipe(colorr, CHANGE_TIME, 9, 11);
   if(hsvr >= 65000){
     hsvr = 0;
   }
 }
 
-void bluegrad(){
-  hsvb = hsvb + 1000;
-  if(hsvb > 45000){
-    hsvb = 25000;
+void redGradBackward(){
+  hsvr = hsvr - HSV_BUMP;
+  colorr = Adafruit_NeoPixel::ColorHSV(hsvr, 255, 255);
+  colorWipe(colorr, CHANGE_TIME, 0, 2); // Red
+  colorWipe(colorr, CHANGE_TIME, 9, 11);
+  if(hsvr == 0){
+    hsvr = 65000;
   }
+}
+
+void blueGradForward(){
+  hsvb = hsvb + HSV_BUMP;
   colorb = Adafruit_NeoPixel::ColorHSV(hsvb, 255, 255);
   colorWipe(colorb, 100, 3, 8); // Blue
 }
 
-/*
-void ring(){
+void blueGradBackward(){
+  hsvb = hsvb - HSV_BUMP;
+  colorb = Adafruit_NeoPixel::ColorHSV(hsvb, 255, 255);
+  colorWipe(colorb, 100, 3, 8); // Blue
+}
 
-  strip.setPixelColor(0, colorr1);
-  strip.setPixelColor(1, colorr2);
-  strip.setPixelColor(2, colorr3);
+void ringGrad(){
+  switch(state){
+    case 0:
+      redGradForward();
+      blueGradForward();
+      if(hsvr >= RED_DARK && hsvr < RED_LIGHT && hsvb >= BLUE_DARK)
+        state = !state;
+    break;
 
-  strip.setPixelColor(3, colorb1);
-  strip.setPixelColor(4, colorb2);
-  strip.setPixelColor(5, colorb3);
-
-  strip.setPixelColor(6, colorb1);
-  strip.setPixelColor(7, colorb2);
-  strip.setPixelColor(8, colorb3);
-
-  strip.setPixelColor(9, colorr1);
-  strip.setPixelColor(10, colorr2);
-  strip.setPixelColor(11, colorr3);
+    case 1:
+      redGradBackward();
+      blueGradBackward();
+      if(hsvr < RED_DARK && hsvr >= RED_LIGHT && hsvb <= BLUE_LIGHT)
+        state = !state;
+    break;
+  }
 
   strip.show(); 
-
 }
-*/
