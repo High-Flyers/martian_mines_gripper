@@ -7,7 +7,7 @@
 #define stop 1510
 
 #define RX 21 //SDA
-#define TX 22 //SCL
+#define TX 17 //SCL
 
 #define kranc_L 25
 #define kranc_R 26
@@ -38,15 +38,19 @@ auto colorr = Adafruit_NeoPixel::ColorHSV(hsvr, 255, 255);
 
 bool state = 0;  //0 forward, 1 backward
 
+
+
+
+
 void setup() {
   Serial.begin(9600);
   pinMode(kranc_L, INPUT_PULLUP);
   pinMode(kranc_R, INPUT_PULLUP);
   pinMode(kranc_B, INPUT_PULLUP); 
 
-  pinMode(3, OUTPUT);
-  pinMode(19, INPUT);
-  pinMode(18, OUTPUT);
+  //pinMode(3, OUTPUT);
+  pinMode(RX, INPUT_PULLDOWN);
+  pinMode(TX, OUTPUT);
 
   s.attach(serv); 
 
