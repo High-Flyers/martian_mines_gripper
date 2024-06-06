@@ -11,7 +11,7 @@
 
 #define backward 1000
 #define forward 2000
-#define stop 1510
+#define stop 1500
 
 #define LED_PIN 27
 
@@ -120,6 +120,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   Serial.println("dupa");
   Serial.println(Pwm::getUs());
+  state = Pwm::getUs();
   /*
    if (Pwm::isAvailable() && Pwm::checkTrigger()) {
         Pwm::disable();
