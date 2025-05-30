@@ -1,0 +1,1 @@
+![Schemat działania](schematic.jpg)
