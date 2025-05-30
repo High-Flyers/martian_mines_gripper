@@ -17,7 +17,7 @@ void setup() {
   pinMode(RX, INPUT_PULLDOWN);
   pinMode(TX, OUTPUT);
 
-  s.attach(serv); 
+  s.attach(SERVO_PIN); 
 
   //ACS.autoMidPoint();
 
@@ -37,18 +37,18 @@ void loop() {
   if (digitalRead(RX) == 1){
     // Krec tak dlugo az dojedzie do krancowek
     if (digitalRead(kranc_L) == 1 && digitalRead(kranc_R) == 1) {
-      s.writeMicroseconds(forward);
+      s.writeMicroseconds(FORWARD);
     } 
     // Przy krancowkach zatrzymaj i wyslij info zwrotne do Jetsona
     else {
-      s.writeMicroseconds(stop);
+      s.writeMicroseconds(STOP);
       digitalWrite(TX, 1);
     }
   // Komenda otwarcia lapaczki
   } else { //RX ==0
       // Krec tak dlugo az dojedzie do krancowek
       if (digitalRead(kranc_B) == 1) {
-        s.writeMicroseconds(backward);
+        s.writeMicroseconds(BACKWARD);
       } 
       // Przy krancowkach zatrzymaj i wyslij info zwrotne do Jetsona
       else {

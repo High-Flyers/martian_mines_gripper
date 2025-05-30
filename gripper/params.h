@@ -1,17 +1,17 @@
-#define backward 1000
-#define forward 2000
-#define stop 1510
+#define BACKWARD 1000
+#define FORWARD 2000
+#define STOP 1510
 
-#define RX 21 //SDA
-#define TX 17 //SCL
+#define RX 23 
+#define TX 16
 
-#define kranc_L 25
-#define kranc_R 26
-#define kranc_B 32
+#define kranc_L 18 // Lewo
+#define kranc_R 20 // Prawo
+#define kranc_B 19 // Tyl
 
-#define serv 33
+#define SERVO_PIN 0
 
-#define LED_PIN 27
+#define LED_PIN 22
 
 #define HSV_BUMP 3000
 #define CHANGE_TIME 10
