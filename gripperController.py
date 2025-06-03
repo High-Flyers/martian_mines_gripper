@@ -2,27 +2,27 @@ import Jetson.GPIO as GPIO
 
 class GripperController:
         def __init__(self):
-            self.cmdPin = 11
-            self.ackPin = 15
+            self.txPin = 6
+            self.rxPin = 5
 
             GPIO.setmode(GPIO.BOARD)
-            GPIO.setup(self.cmdPin, GPIO.OUT)
-            GPIO.setup(self.ackPin, GPIO.IN)
+            GPIO.setup(self.txPin, GPIO.OUT)
+            GPIO.setup(self.rxPin, GPIO.IN)
 
-            GPIO.output(self.cmdPin, GPIO.LOW)
+            GPIO.output(self.txPin, GPIO.LOW)
 
         def commandOpen(self):
-            GPIO.output(self.cmdPin, GPIO.LOW)
+            GPIO.output(self.txPin, GPIO.LOW)
                 
         def commandClose(self):
-            GPIO.output(self.cmdPin, GPIO.HIGH)
+            GPIO.output(self.txPin, GPIO.HIGH)
                 
         def didOpen(self):
-            return not GPIO.input(self.ackPin)
+            return not GPIO.input(self.rxPin)
             
 
         def didClose(self):
-            return GPIO.input(self.ackPin)
+            return GPIO.input(self.rxPin)
 
         def cleanup(self):
             GPIO.cleanup()
