@@ -14,7 +14,7 @@ void setup() {
   pinMode(kranc_B, INPUT_PULLUP); 
 
   //pinMode(3, OUTPUT);
-  pinMode(RX, INPUT_PULLDOWN);
+  pinMode(RX, INPUT);
   pinMode(TX, OUTPUT);
 
   s.attach(SERVO_PIN); 
@@ -36,7 +36,7 @@ void loop() {
   // Komenda zamkniecia lapaczki
   if (digitalRead(RX) == 1){
     // Krec tak dlugo az dojedzie do krancowek
-    if (digitalRead(kranc_L) == 1 && digitalRead(kranc_R) == 1) {
+    if (digitalRead(kranc_L) == 1 /*digitalRead(kranc_R) == 1*/) {
       s.writeMicroseconds(FORWARD);
     } 
     // Przy krancowkach zatrzymaj i wyslij info zwrotne do Jetsona
@@ -52,7 +52,7 @@ void loop() {
       } 
       // Przy krancowkach zatrzymaj i wyslij info zwrotne do Jetsona
       else {
-        s.writeMicroseconds(stop);
+        s.writeMicroseconds(STOP);
         digitalWrite(TX, 0);
       }
   }

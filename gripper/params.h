@@ -9,7 +9,7 @@
 #define kranc_R 20 // Prawo
 #define kranc_B 19 // Tyl
 
-#define SERVO_PIN 0
+#define SERVO_PIN 21
 
 #define LED_PIN 22
 
